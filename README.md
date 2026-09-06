@@ -267,8 +267,6 @@ MONGODB_URI=mongodb://127.0.0.1:27017/watchpoint_test npm run test:integration
 
 ## Known limitations
 
-- Yahoo's ticker search returns stories *related* to a symbol rather than that company's filings, so the product calls them "related stories" rather than claiming company events.
-- Yahoo's endpoints are public and undocumented. If they change shape the provider degrades to "not available" rather than failing; there is no contractual stability guarantee.
 - Alert notifications are email-only and need SMTP credentials; delivery failures are recorded on the history row rather than retried.
 - The alert poller runs every 5 minutes, so a crossing is detected within that window rather than instantly.
 - Intraday volume is not available, so the volume signal compares the latest *daily* session against its 20-session average.
