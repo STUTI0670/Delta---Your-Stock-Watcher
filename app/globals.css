@@ -1,0 +1,1003 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   WATCHPOINT — DESIGN SYSTEM
+
+   A personal market briefing. The whole product answers one question:
+   "what changed since I last checked?"
+
+   The visual language is a light, calm consumer-fintech sheet:
+   - Off-white canvas, white cards, generous whitespace. Nothing is dense.
+   - Blue is the brand. It marks the product's own voice — the briefing,
+     the primary action, the active tab. It is never used for market data.
+   - Green means growth, red means decline. Direction only, nowhere else.
+   - One thing dominates each screen. Everything else steps back into grey.
+   - Numerals are tabular so columns of figures align and scan vertically.
+   ========================================================================== */
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  color-scheme: light;
+
+  /* ---- Foundation: off-white canvas, white paper, navy ink -------------- */
+  --canvas: #f5f7fb;
+  --paper: #ffffff;
+  --paper-sunk: #f8fafc;
+
+  --ink: #0d1b2f;
+  --ink-2: #4a5a72;
+  --ink-3: #7c8ba3;
+  --ink-4: #a7b3c5;
+
+  --line: #e6ebf3;
+  --line-strong: #d4dce9;
+
+  /* ---- Brand: blue leads, green is growth ------------------------------ */
+  --blue: #2f5bea;
+  --blue-hover: #2449c9;
+  --blue-soft: #eef3ff;
+  --blue-line: #d7e2ff;
+
+  --green: #0fa66d;
+  --green-soft: #e9f8f1;
+  --green-line: #c2ebd9;
+
+  --red: #e0514f;
+  --red-soft: #fdeeed;
+  --red-line: #f8d5d3;
+
+  --amber: #c9821a;
+  --amber-soft: #fdf4e6;
+  --amber-line: #f2dfbe;
+
+  --shadow-card: 0 1px 2px rgba(13, 27, 47, 0.04), 0 8px 24px -12px rgba(13, 27, 47, 0.1);
+  --shadow-lift: 0 2px 6px rgba(13, 27, 47, 0.06), 0 20px 48px -20px rgba(13, 27, 47, 0.22);
+  --shadow-hero: 0 2px 4px rgba(13, 27, 47, 0.03), 0 24px 56px -28px rgba(47, 91, 234, 0.28);
+}
+
+html {
+  background: var(--canvas);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink-2);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: -0.006em;
+}
+
+::selection {
+  background: var(--blue-soft);
+  color: var(--blue-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Figures are always tabular so columns of numbers line up. Declared as a
+   utility because Tailwind v4's @apply only accepts real utilities. */
+@utility wp-num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+
+@layer components {
+  /* ================================================================ SHELL */
+  .wp-shell {
+    @apply flex min-h-screen flex-col;
+  }
+  .wp-measure {
+    @apply mx-auto w-full max-w-[1120px] px-5 md:px-8;
+  }
+
+  .wp-topbar {
+    @apply sticky top-0 z-40 border-b;
+    border-color: var(--line);
+    background: color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+  .wp-topbar-inner {
+    @apply flex h-[68px] items-center gap-4;
+  }
+
+  /* -------------------------------------------------------------- brand */
+  .wp-brand {
+    @apply flex shrink-0 items-center gap-2.5;
+  }
+  .wp-brand-name {
+    @apply text-[17px] font-semibold tracking-[-0.02em];
+    color: var(--ink);
+  }
+
+  /* ---------------------------------------------------------- navigation */
+  .wp-nav {
+    @apply ml-2 hidden items-center gap-1 md:flex;
+  }
+  .wp-nav-link {
+    @apply rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors;
+    color: var(--ink-3);
+  }
+  .wp-nav-link:hover {
+    color: var(--ink);
+    background: var(--paper-sunk);
+  }
+  .wp-nav-link[data-active="true"] {
+    color: var(--blue);
+    background: var(--blue-soft);
+  }
+
+  /* Mobile: a tab bar, so the whole product sits in one thumb reach. */
+  .wp-tabbar {
+    @apply fixed inset-x-0 bottom-0 z-40 flex border-t md:hidden;
+    border-color: var(--line);
+    background: color-mix(in srgb, var(--paper) 94%, transparent);
+    backdrop-filter: blur(16px);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .wp-tab {
+    @apply flex flex-1 cursor-pointer flex-col items-center gap-1 py-2.5 text-[10px] font-medium transition-colors;
+    color: var(--ink-3);
+  }
+  .wp-tab[data-active="true"] {
+    color: var(--blue);
+  }
+
+  /* ========================================================== TYPOGRAPHY */
+  .wp-page-title {
+    @apply text-[28px] font-semibold tracking-[-0.03em] md:text-[34px];
+    color: var(--ink);
+  }
+  .wp-page-sub {
+    @apply mt-2 max-w-[54ch] text-[15px];
+    color: var(--ink-3);
+  }
+  .wp-section-title {
+    @apply text-[17px] font-semibold tracking-[-0.02em];
+    color: var(--ink);
+  }
+  .wp-label {
+    @apply text-[11px] font-semibold uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-4);
+  }
+  .wp-muted {
+    color: var(--ink-3);
+  }
+
+  /* ---------------------------------------------------- market direction */
+  .wp-up {
+    color: var(--green);
+  }
+  .wp-down {
+    color: var(--red);
+  }
+  .wp-flat {
+    color: var(--ink-3);
+  }
+
+  /* =============================================================== CARDS */
+  .wp-card {
+    @apply rounded-2xl border;
+    background: var(--paper);
+    border-color: var(--line);
+    box-shadow: var(--shadow-card);
+  }
+  .wp-card-pad {
+    @apply p-5 md:p-7;
+  }
+
+  /* ======================================================== THE SIGNATURE
+     "Since you last checked" — the one component that is the product.
+     A white sheet under a soft blue-to-green crown, so it reads as the app
+     speaking to you rather than as another data card. */
+  .wp-brief {
+    @apply overflow-hidden rounded-[20px] border;
+    background: var(--paper);
+    border-color: var(--blue-line);
+    box-shadow: var(--shadow-hero);
+  }
+  .wp-brief-crown {
+    @apply flex flex-wrap items-center gap-x-3 gap-y-1 px-5 py-3.5 md:px-7;
+    background: linear-gradient(96deg, var(--blue-soft) 0%, #f0f7ff 58%, var(--green-soft) 100%);
+    border-bottom: 1px solid var(--blue-line);
+  }
+  .wp-brief-crown-title {
+    @apply text-[13px] font-semibold tracking-[-0.01em];
+    color: var(--blue-hover);
+  }
+  .wp-brief-crown-time {
+    @apply wp-num ml-auto text-[13px] font-medium;
+    color: var(--ink-2);
+  }
+  .wp-brief-pulse {
+    @apply relative inline-flex h-2 w-2 shrink-0 rounded-full;
+    background: var(--blue);
+  }
+  .wp-brief-pulse::after {
+    content: "";
+    @apply absolute inset-0 rounded-full;
+    background: var(--blue);
+    animation: wp-pulse 2.4s ease-out infinite;
+  }
+
+  .wp-brief-head {
+    @apply px-5 pt-7 pb-6 md:px-7 md:pt-8;
+  }
+  .wp-brief-count {
+    @apply text-[30px] font-semibold leading-[1.1] tracking-[-0.035em] md:text-[38px];
+    color: var(--ink);
+  }
+  .wp-brief-note {
+    @apply mt-2.5 max-w-[52ch] text-[15px];
+    color: var(--ink-3);
+  }
+
+  /* The breakdown: major movement / unusual activity / relevant event. */
+  .wp-facets {
+    @apply mt-5 flex flex-wrap gap-2;
+  }
+  .wp-facet {
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[13px] font-medium;
+    background: var(--paper-sunk);
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+  .wp-facet-dot {
+    @apply h-1.5 w-1.5 shrink-0 rounded-full;
+    background: var(--ink-4);
+  }
+  .wp-facet[data-on="true"] {
+    background: var(--blue-soft);
+    border-color: var(--blue-line);
+    color: var(--blue-hover);
+  }
+  .wp-facet[data-on="true"] .wp-facet-dot {
+    background: var(--blue);
+  }
+  .wp-facet-num {
+    @apply wp-num font-semibold;
+  }
+
+  /* ---------------------------------------------- the changes themselves */
+  .wp-change {
+    @apply flex items-start gap-4 border-t px-5 py-5 transition-colors md:px-7;
+    border-color: var(--line);
+  }
+  .wp-change:hover {
+    background: var(--paper-sunk);
+  }
+  .wp-change-mark {
+    @apply mt-1 h-9 w-1.5 shrink-0 rounded-full;
+    background: var(--line-strong);
+  }
+  .wp-change[data-level="critical"] .wp-change-mark {
+    background: var(--blue);
+  }
+  .wp-change[data-level="watch"] .wp-change-mark {
+    background: var(--blue-line);
+  }
+  .wp-change-body {
+    @apply min-w-0 flex-1;
+  }
+  .wp-change-symbol {
+    @apply text-[17px] font-semibold tracking-[-0.02em];
+    color: var(--ink);
+  }
+  .wp-change-company {
+    @apply truncate text-[13px];
+    color: var(--ink-3);
+  }
+  .wp-change-note {
+    @apply mt-1.5 max-w-[58ch] text-[14px];
+    color: var(--ink-2);
+  }
+  .wp-change-signals {
+    @apply mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[12.5px];
+    color: var(--ink-3);
+  }
+  .wp-change-figs {
+    @apply flex shrink-0 flex-col items-end;
+  }
+  .wp-change-move {
+    @apply wp-num text-[22px] font-semibold leading-none tracking-[-0.03em] md:text-[26px];
+  }
+  .wp-change-price {
+    @apply wp-num mt-1.5 text-[13px];
+    color: var(--ink-3);
+  }
+
+  .wp-brief-foot {
+    @apply flex items-center justify-between gap-4 border-t px-5 py-3.5 md:px-7;
+    border-color: var(--line);
+    background: var(--paper-sunk);
+  }
+
+  /* ================================================================ PILLS
+     The one-word verdict: Significant / Worth a look / Quiet. Deliberately
+     low-saturation — a pill states a fact, it does not shout. */
+  .wp-pill {
+    @apply inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-semibold;
+    background: var(--paper-sunk);
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+  .wp-pill[data-level="critical"] {
+    background: var(--blue-soft);
+    border-color: var(--blue-line);
+    color: var(--blue-hover);
+  }
+  .wp-pill[data-level="watch"] {
+    background: var(--paper);
+    border-color: var(--blue-line);
+    color: var(--ink-2);
+  }
+  .wp-pill-up {
+    background: var(--green-soft);
+    border-color: var(--green-line);
+    color: var(--green);
+  }
+  .wp-pill-down {
+    background: var(--red-soft);
+    border-color: var(--red-line);
+    color: var(--red);
+  }
+  .wp-pill-warn {
+    background: var(--amber-soft);
+    border-color: var(--amber-line);
+    color: var(--amber);
+  }
+
+  /* Freshness qualifiers, said quietly beside the figure they apply to. */
+  .wp-flagtext {
+    @apply ml-2 inline-flex items-center gap-1 text-[11px] font-medium;
+    color: var(--amber);
+  }
+
+  /* ============================================================ THE TABLE
+     The raw watchlist. A list/table hybrid: no cell borders, no zebra, one
+     hairline between rows, and the same visual weight for every stock. */
+  .wp-table {
+    @apply w-full overflow-hidden rounded-2xl border;
+    background: var(--paper);
+    border-color: var(--line);
+    box-shadow: var(--shadow-card);
+  }
+  .wp-tr {
+    @apply flex items-center gap-3 px-4 py-3.5 transition-colors md:gap-4 md:px-6;
+  }
+  .wp-tr + .wp-tr {
+    @apply border-t;
+    border-color: var(--line);
+  }
+  .wp-tr:hover {
+    background: var(--paper-sunk);
+  }
+  .wp-thead {
+    @apply flex items-center gap-3 border-b px-4 py-2.5 md:gap-4 md:px-6;
+    border-color: var(--line);
+    background: var(--paper-sunk);
+  }
+  .wp-th {
+    @apply text-[11px] font-semibold uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-4);
+  }
+  .wp-td-id {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+  .wp-td-symbol {
+    @apply text-[15px] font-semibold tracking-[-0.015em];
+    color: var(--ink);
+  }
+  .wp-td-company {
+    @apply truncate text-[12.5px];
+    color: var(--ink-3);
+  }
+  .wp-td-spark {
+    @apply hidden w-[84px] shrink-0 sm:block;
+  }
+  .wp-td-price {
+    @apply wp-num w-[86px] shrink-0 text-right text-[15px] font-medium;
+    color: var(--ink);
+  }
+  .wp-td-move {
+    @apply wp-num w-[78px] shrink-0 text-right text-[14px] font-medium;
+  }
+  .wp-td-since {
+    @apply hidden w-[136px] shrink-0 justify-end md:flex;
+  }
+  .wp-td-actions {
+    @apply flex w-[72px] shrink-0 items-center justify-end gap-1;
+  }
+
+  /* =============================================================== ALERTS */
+  .wp-alert-row {
+    @apply flex items-center gap-3 px-4 py-4 transition-colors md:gap-4 md:px-6;
+  }
+  .wp-alert-row + .wp-alert-row {
+    @apply border-t;
+    border-color: var(--line);
+  }
+  .wp-alert-icon {
+    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-full;
+  }
+  .wp-alert-icon[data-direction="buy"] {
+    background: var(--green-soft);
+    color: var(--green);
+  }
+  .wp-alert-icon[data-direction="sell"] {
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+  .wp-alert-row[data-enabled="false"] .wp-alert-icon {
+    background: var(--paper-sunk);
+    color: var(--ink-4);
+  }
+  .wp-alert-id {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+  .wp-alert-symbol {
+    @apply text-[15px] font-semibold tracking-[-0.015em];
+    color: var(--ink);
+  }
+  .wp-alert-rule {
+    @apply wp-num text-[13px];
+    color: var(--ink-3);
+  }
+
+  /* The confirmation after creating one: "✓ Buy alert active at $165". */
+  .wp-confirm {
+    @apply flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-[13.5px] font-medium;
+    background: var(--green-soft);
+    border-color: var(--green-line);
+    color: #0a7a51;
+  }
+  .wp-confirm-check {
+    @apply flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full;
+    background: var(--green);
+    color: #fff;
+  }
+
+  /* The threshold statement on the stock page. */
+  .wp-threshold {
+    @apply flex items-center gap-3 py-3;
+  }
+  .wp-threshold + .wp-threshold {
+    @apply border-t;
+    border-color: var(--line);
+  }
+  .wp-threshold-label {
+    @apply flex-1 text-[14px];
+    color: var(--ink-2);
+  }
+  .wp-threshold-value {
+    @apply wp-num text-[15px] font-semibold;
+    color: var(--ink);
+  }
+
+  /* ================================================================ STATS
+     Big, scannable figures — three numbers that explain the whole visit. */
+  .wp-stats {
+    @apply grid gap-3 sm:grid-cols-3;
+  }
+  .wp-stat {
+    @apply rounded-2xl border p-5;
+    background: var(--paper);
+    border-color: var(--line);
+  }
+  .wp-stat-label {
+    @apply text-[12.5px] font-medium;
+    color: var(--ink-3);
+  }
+  .wp-stat-value {
+    @apply wp-num mt-2 text-[28px] font-semibold leading-none tracking-[-0.03em];
+    color: var(--ink);
+  }
+  .wp-stat-note {
+    @apply wp-num mt-2 text-[12.5px];
+    color: var(--ink-4);
+  }
+
+  /* ============================================================= CONTROLS */
+  .wp-btn {
+    @apply inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full px-5 text-[14px] font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .wp-btn-primary {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(47, 91, 234, 0.24), 0 8px 20px -10px rgba(47, 91, 234, 0.6);
+  }
+  .wp-btn-primary:hover:not(:disabled) {
+    background: var(--blue-hover);
+  }
+  .wp-btn-quiet {
+    @apply border;
+    background: var(--paper);
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+  .wp-btn-quiet:hover:not(:disabled) {
+    border-color: var(--ink-4);
+    background: var(--paper-sunk);
+  }
+  .wp-btn-quiet[data-on="true"] {
+    background: var(--blue-soft);
+    border-color: var(--blue-line);
+    color: var(--blue-hover);
+  }
+  .wp-btn-ghost {
+    color: var(--ink-3);
+  }
+  .wp-btn-ghost:hover:not(:disabled) {
+    color: var(--ink);
+    background: var(--paper-sunk);
+  }
+  .wp-btn-sm {
+    @apply h-8 px-3.5 text-[13px];
+  }
+
+  .wp-icon-btn {
+    @apply inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-40;
+    color: var(--ink-4);
+  }
+  .wp-icon-btn:hover:not(:disabled) {
+    color: var(--blue);
+    background: var(--blue-soft);
+  }
+
+  .wp-search-trigger {
+    @apply flex h-10 cursor-pointer items-center gap-2.5 rounded-full border px-4 text-[14px] transition-colors;
+    background: var(--paper-sunk);
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+  .wp-search-trigger:hover {
+    border-color: var(--line-strong);
+    color: var(--ink-2);
+    background: var(--paper);
+  }
+  .wp-kbd {
+    @apply wp-num ml-1 rounded-md border px-1.5 py-0.5 text-[11px];
+    border-color: var(--line-strong);
+    background: var(--paper);
+    color: var(--ink-4);
+  }
+
+  .wp-field {
+    @apply flex h-12 w-full items-center gap-2 rounded-xl border px-3.5 transition-all;
+    background: var(--paper);
+    border-color: var(--line-strong);
+  }
+  .wp-field:focus-within {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px var(--blue-soft);
+  }
+  .wp-field-prefix {
+    @apply wp-num text-[16px];
+    color: var(--ink-4);
+  }
+  .wp-input {
+    @apply wp-num h-full w-full border-0 bg-transparent p-0 text-[16px] font-medium outline-none;
+    color: var(--ink);
+  }
+  .wp-input::placeholder {
+    font-weight: 400;
+    color: var(--ink-4);
+  }
+  /* Spinners fight tabular alignment on price fields. */
+  .wp-input::-webkit-outer-spin-button,
+  .wp-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .wp-input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  /* The command-palette field. Colour lives here rather than inline so the
+     text can never inherit — or lose — its colour from somewhere else. */
+  .wp-search-input {
+    @apply h-7 w-full border-0 bg-transparent p-0 text-[16px] outline-none;
+    color: var(--ink, #0d1b2f);
+    caret-color: var(--blue, #2f5bea);
+    -webkit-text-fill-color: currentColor;
+  }
+  .wp-search-input::placeholder {
+    color: var(--ink-4, #a7b3c5);
+    -webkit-text-fill-color: var(--ink-4, #a7b3c5);
+  }
+
+  .wp-chip {
+    @apply inline-flex h-7 cursor-pointer items-center rounded-full border px-2.5 text-[12px] font-medium transition-colors;
+    background: var(--paper);
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+  .wp-chip:hover {
+    border-color: var(--blue-line);
+    background: var(--blue-soft);
+    color: var(--blue-hover);
+  }
+
+  .wp-toggle {
+    @apply relative h-6 w-10 shrink-0 cursor-pointer rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+    background: var(--line-strong);
+  }
+  .wp-toggle[data-on="true"] {
+    background: var(--blue);
+  }
+  .wp-toggle-knob {
+    @apply absolute left-[3px] top-[3px] h-[18px] w-[18px] rounded-full bg-white transition-transform;
+    box-shadow: 0 1px 3px rgba(13, 27, 47, 0.28);
+  }
+  .wp-toggle[data-on="true"] .wp-toggle-knob {
+    transform: translateX(16px);
+  }
+
+  /* =============================================================== STATES */
+  .wp-empty {
+    @apply flex flex-col items-center rounded-2xl border px-6 py-14 text-center;
+    background: var(--paper);
+    border-color: var(--line);
+  }
+  .wp-empty-art {
+    @apply mb-5 flex h-14 w-14 items-center justify-center rounded-2xl;
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+  .wp-empty-title {
+    @apply max-w-[30ch] text-[20px] font-semibold tracking-[-0.02em];
+    color: var(--ink);
+  }
+  .wp-empty-body {
+    @apply mt-2 max-w-[46ch] text-[14.5px];
+    color: var(--ink-3);
+  }
+  .wp-empty-action {
+    @apply mt-6;
+  }
+
+  /* A quiet inline explanation — never a red banner for a normal condition. */
+  .wp-notice {
+    @apply flex items-start gap-3 rounded-xl border px-4 py-3 text-[13.5px];
+    background: var(--amber-soft);
+    border-color: var(--amber-line);
+    color: #8a5d12;
+  }
+  .wp-notice-neutral {
+    background: var(--paper-sunk);
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+
+  .wp-skeleton {
+    @apply rounded-lg;
+    background: linear-gradient(90deg, #eef1f6 0%, #f7f9fc 50%, #eef1f6 100%);
+    background-size: 200% 100%;
+    animation: wp-shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* ============================================================= OVERLAYS */
+  .wp-overlay {
+    @apply fixed inset-0 z-50;
+    background: rgba(13, 27, 47, 0.28);
+    backdrop-filter: blur(2px);
+  }
+  .wp-panel {
+    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-[22px] border p-6;
+    background: var(--paper);
+    border-color: var(--line);
+    box-shadow: var(--shadow-lift);
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+  }
+  /**
+   * The command palette.
+   *
+   * Anchored near the top rather than centred: a centred panel taller than the
+   * viewport pushes its own input off the top of the screen, where it cannot be
+   * scrolled back into view. The header and footer stay put and only the result
+   * list scrolls, so the field you are typing into is always visible.
+   * `dvh` keeps that true when mobile browser chrome expands and collapses.
+   */
+  .wp-palette {
+    @apply fixed left-1/2 z-50 flex w-[calc(100vw-1.5rem)] max-w-[540px] -translate-x-1/2 flex-col overflow-hidden rounded-[22px] border p-0;
+    top: max(3vh, 0.75rem);
+    /* Horizontal centring comes from -translate-x-1/2 above. Adding a
+       `transform` here as well would stack with Tailwind's `translate`
+       property and shift the panel a full width off-screen. */
+    max-height: calc(100dvh - max(6vh, 1.5rem));
+    background: var(--paper);
+    border-color: var(--line);
+    box-shadow: var(--shadow-lift);
+  }
+  .wp-palette-head {
+    @apply flex shrink-0 items-center gap-3 border-b px-5 py-4;
+    border-color: var(--line);
+  }
+  .wp-palette-body {
+    @apply min-h-0 flex-1 overflow-y-auto py-2;
+  }
+  .wp-palette-foot {
+    @apply flex shrink-0 flex-wrap items-center gap-4 border-t px-5 py-3 text-[12px];
+    border-color: var(--line);
+    background: var(--paper-sunk);
+    color: var(--ink-3);
+  }
+  .wp-panel-title {
+    @apply text-[19px] font-semibold tracking-[-0.02em];
+    color: var(--ink);
+  }
+  .wp-panel-sub {
+    @apply text-[13.5px];
+    color: var(--ink-3);
+  }
+
+  .wp-result {
+    @apply flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition-colors;
+  }
+  .wp-result:hover,
+  .wp-result[data-active="true"] {
+    background: var(--blue-soft);
+  }
+  .wp-result-symbol {
+    @apply w-[72px] shrink-0 text-[14px] font-semibold;
+    color: var(--ink);
+  }
+  .wp-result-name {
+    @apply truncate text-[13.5px];
+    color: var(--ink-3);
+  }
+
+  /* ================================================================= AUTH */
+  .auth-layout {
+    @apply grid min-h-screen lg:grid-cols-[1fr_0.9fr];
+  }
+  .auth-left-section {
+    @apply flex flex-col px-6 py-10 md:px-14 lg:px-20;
+    background: var(--paper);
+  }
+  .auth-logo {
+    @apply mb-12 inline-flex;
+  }
+  .auth-right-section {
+    @apply relative hidden flex-col justify-between overflow-hidden p-14 lg:flex;
+    background: linear-gradient(150deg, #eef3ff 0%, #f2f8ff 46%, var(--green-soft) 100%);
+  }
+  .auth-quote {
+    @apply max-w-[16ch] text-[40px] font-semibold leading-[1.1] tracking-[-0.035em];
+    color: var(--ink);
+  }
+  .auth-quote-note {
+    @apply mt-6 max-w-[38ch] text-[15px];
+    color: var(--ink-2);
+  }
+  .form-title {
+    @apply mb-8 text-[30px] font-semibold tracking-[-0.03em] md:text-[34px];
+    color: var(--ink);
+  }
+  .form-label {
+    @apply text-[13px] font-medium;
+    color: var(--ink-2);
+  }
+  .form-input {
+    @apply h-12 rounded-xl text-[15px];
+    background: var(--paper);
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+  .form-input::placeholder {
+    color: var(--ink-4);
+  }
+  .form-input:focus-visible {
+    border-color: var(--blue);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--blue-soft);
+  }
+  .footer-link {
+    @apply flex items-center justify-center gap-1.5 text-[14px];
+    color: var(--ink-3);
+  }
+  /* Legacy class name from the auth forms; now the product's primary button. */
+  .yellow-btn {
+    @apply inline-flex h-12 w-full cursor-pointer items-center justify-center rounded-full text-[15px] font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+    background: var(--blue);
+    color: #fff;
+  }
+  .yellow-btn:hover:not(:disabled) {
+    background: var(--blue-hover);
+  }
+  .scrollbar-hide-default {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-hide-default::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ====================================================== P2: WHY / SCORE */
+
+  /* The score badge. A number the user can hold the product to. */
+  .wp-score {
+    @apply inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-semibold;
+    background: var(--paper-sunk);
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+  .wp-score[data-band="critical"] {
+    background: var(--blue-soft);
+    border-color: var(--blue-line);
+    color: var(--blue-hover);
+  }
+  .wp-score[data-band="watch"] {
+    background: var(--paper);
+    border-color: var(--blue-line);
+    color: var(--ink-2);
+  }
+  .wp-score-num {
+    @apply wp-num font-bold;
+  }
+
+  /* "Why you're seeing this" — the score, itemised. */
+  .wp-why {
+    @apply rounded-2xl border p-5;
+    background: var(--paper);
+    border-color: var(--line);
+  }
+  .wp-why-list {
+    @apply mt-4 flex flex-col;
+  }
+  .wp-why-item {
+    @apply flex items-start gap-3 border-t py-3.5 first:border-t-0 first:pt-0;
+    border-color: var(--line);
+  }
+  .wp-why-kind {
+    @apply mt-0.5 w-[74px] shrink-0 text-[11px] font-semibold uppercase tracking-[0.08em];
+    color: var(--ink-4);
+  }
+  .wp-why-text {
+    @apply flex-1 text-[14px] leading-relaxed;
+    color: var(--ink-2);
+  }
+  .wp-why-points {
+    @apply wp-num shrink-0 rounded-md px-2 py-0.5 text-[12px] font-bold;
+    background: var(--blue-soft);
+    color: var(--blue-hover);
+  }
+  .wp-why-missing {
+    @apply mt-4 rounded-xl border px-4 py-3 text-[12.5px];
+    background: var(--paper-sunk);
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+
+  /* Thumbs. Small, quiet, and never in the way of the content. */
+  .wp-vote {
+    @apply inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border transition-colors;
+    background: var(--paper);
+    border-color: var(--line);
+    color: var(--ink-4);
+  }
+  .wp-vote:hover:not(:disabled) {
+    border-color: var(--line-strong);
+    color: var(--ink-2);
+  }
+  .wp-vote[data-on="true"] {
+    background: var(--blue-soft);
+    border-color: var(--blue-line);
+    color: var(--blue-hover);
+  }
+  .wp-vote:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+  .wp-vote-row {
+    @apply flex flex-wrap items-center gap-2 border-t pt-4;
+    border-color: var(--line);
+  }
+  .wp-vote-label {
+    @apply text-[12.5px];
+    color: var(--ink-3);
+  }
+
+  /* ======================================================== P2: CADENCE */
+  .wp-cadence {
+    @apply flex items-center gap-4 border-t py-4 first:border-t-0;
+    border-color: var(--line);
+  }
+  .wp-cadence-id {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+  .wp-cadence-symbol {
+    @apply text-[15px] font-semibold tracking-[-0.01em];
+    color: var(--ink);
+  }
+  .wp-cadence-note {
+    @apply text-[12.5px];
+    color: var(--ink-3);
+  }
+  .wp-cadence-stat {
+    @apply wp-num hidden w-[92px] shrink-0 text-right text-[14px] font-semibold sm:block;
+    color: var(--ink-2);
+  }
+  .wp-cadence-pill {
+    @apply inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-semibold;
+    background: var(--paper-sunk);
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+  .wp-cadence-pill[data-cadence="more-often"] {
+    background: var(--amber-soft);
+    border-color: var(--amber-line);
+    color: var(--amber);
+  }
+  .wp-cadence-pill[data-cadence="less-often"] {
+    background: var(--green-soft);
+    border-color: var(--green-line);
+    color: var(--green);
+  }
+
+  /* ================================================ P2: DELIVERY CHOICE */
+  .wp-choice {
+    @apply flex w-full cursor-pointer items-start gap-3 rounded-xl border p-4 text-left transition-colors;
+    background: var(--paper);
+    border-color: var(--line);
+  }
+  .wp-choice:hover {
+    border-color: var(--line-strong);
+  }
+  .wp-choice[data-on="true"] {
+    background: var(--blue-soft);
+    border-color: var(--blue-line);
+  }
+  .wp-choice-radio {
+    @apply mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2;
+    border-color: var(--line-strong);
+  }
+  .wp-choice[data-on="true"] .wp-choice-radio {
+    border-color: var(--blue);
+  }
+  .wp-choice-dot {
+    @apply h-2 w-2 rounded-full;
+    background: var(--blue);
+  }
+  .wp-choice-title {
+    @apply text-[14px] font-semibold;
+    color: var(--ink);
+  }
+  .wp-choice-note {
+    @apply mt-0.5 text-[12.5px] leading-relaxed;
+    color: var(--ink-3);
+  }
+}
+
+@keyframes wp-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes wp-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
