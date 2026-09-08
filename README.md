@@ -267,6 +267,6 @@ MONGODB_URI=mongodb://127.0.0.1:27017/watchpoint_test npm run test:integration
 
 ## Known limitations
 
-- Alert notifications are email-only and need SMTP credentials; delivery failures are recorded on the history row rather than retried.
+- Alert notifications are email, delivery failures are recorded on the history row rather than retried.
 - The alert poller runs every 5 minutes, so a crossing is detected within that window rather than instantly.
 - Intraday volume is not available, so the volume signal compares the latest *daily* session against its 20-session average.
