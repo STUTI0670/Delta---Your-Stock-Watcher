@@ -6,7 +6,7 @@
 
 It is not a stock dashboard. It remembers exactly where your watchlist stood the last time you looked, then shows you only what moved since — so you never scan a table of tickers again.
 
-Built on the [Signalist](https://github.com/adrianhajdin/signalist_stock-tracker-app) starter, whose auth, MongoDB and Inngest integrations are reused. The product framing, information architecture, data model, business logic, market-data layer, UI and visual identity are Delta's own.
+
 
 **No API keys required.** Market data comes from Yahoo Finance's public endpoints, so `npm run dev` works immediately.
 
